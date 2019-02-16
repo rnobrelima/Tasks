@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Platform,Alert} from 'react-native'
+import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Platform,AsyncStorage} from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import todayImage from '../../assets/imgs/today.jpg'
@@ -60,11 +60,12 @@ export default class Agenda extends Component{
                 estimateAt: task.date,
                 doneAt:null
             })
-            this.setState({tasks,showAddTask: false}, this.filterTasks)
+            this.setState({tasks,showAddTask: false}
+                , this.filterTasks)
         }
 
         deleteTask = id =>{
-            const tasks = this.state.tasks.filter(task = task.id !== id )
+            const tasks = this.state.tasks.filter(task => task.id !== id )
             this.setState({tasks}, this.filterTasks)
         }
 
@@ -77,6 +78,7 @@ export default class Agenda extends Component{
                 visibleTasks = this.state.tasks.filter(pending)
             }
             this.setState({visibleTasks})
+            AsyncStorage.setItem('tasks',JSON.stringify(this.state.tasks))
 
         }
 
@@ -97,8 +99,10 @@ export default class Agenda extends Component{
                 ,this.filterTasks)
         }
 
-        componentDidMount = () => {
-            this.filterTasks()
+        componentDidMount =  async () => {
+            const data = await AsyncStorage.getItem('tasks')
+            const tasks = JSON.parse(data) || []
+            this.setState({tasks}, this.filterTasks)
         }
 
 
@@ -129,7 +133,7 @@ export default class Agenda extends Component{
                    <FlatList data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
                         renderItem={({ item }) => <Task {...item} toggleTask ={this.toggleTask} 
-                        onDelete={this.deleteTask}    />}/>          
+                        onDelete={this.deleteTask}/>}/>          
                 </View>
                 <ActionButton buttonColor={commonStyles.colors.today}
                     onPress={() => {this.setState({showAddTask: true})}}/>
