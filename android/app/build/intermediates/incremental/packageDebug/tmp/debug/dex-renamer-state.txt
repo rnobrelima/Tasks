@@ -1,0 +1,4 @@
+#Fri Feb 15 10:53:06 BRST 2019
+base.0=/home/nobre/Native/Tasks/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
