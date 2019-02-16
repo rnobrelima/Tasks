@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Platform} from 'react-native'
+import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Platform,Alert} from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import todayImage from '../../assets/imgs/today.jpg'
 import commonStyles from '../commonStyles'
 import Task from '../Components/Task'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import ActionButton from 'react-native-action-button'
+import AddTask from  './AddTask'
 
 
 export default class Agenda extends Component{
@@ -47,6 +49,23 @@ export default class Agenda extends Component{
             ],
             visibleTasks: [],
             showDoneTasks: true,
+            showAddTask: false,
+        }
+
+        addTask = task => {
+            const tasks = [...this.state.tasks]
+            tasks.push({
+                id: Math.random(),
+                desc: task.desc,
+                estimateAt: task.date,
+                doneAt:null
+            })
+            this.setState({tasks,showAddTask: false}, this.filterTasks)
+        }
+
+        deleteTask = id =>{
+            const tasks = this.state.tasks.filter(task = task.id !== id )
+            this.setState({tasks}, this.filterTasks)
         }
 
         filterTasks = () => {
@@ -86,6 +105,9 @@ export default class Agenda extends Component{
     render(){
         return(
             <View style={styles.container}>
+                <AddTask isVisible={this.state.showAddTask}
+                onSave={this.addTask}
+                onCancel={() => this.setState({showAddTask : false})}/> 
                 <ImageBackground source={todayImage}
                     style={styles.background}>
                     <View style={styles.iconBar}>
@@ -106,8 +128,11 @@ export default class Agenda extends Component{
                 <View style={styles.taksContainer}>
                    <FlatList data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={({ item }) => <Task {...item} toggleTask ={this.toggleTask} />}/>          
+                        renderItem={({ item }) => <Task {...item} toggleTask ={this.toggleTask} 
+                        onDelete={this.deleteTask}    />}/>          
                 </View>
+                <ActionButton buttonColor={commonStyles.colors.today}
+                    onPress={() => {this.setState({showAddTask: true})}}/>
             
             </View>
         )
