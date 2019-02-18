@@ -1,5 +1,12 @@
 import React, {Component} from 'react'
-import {StyleSheet, Text, View, ImageBackground, FlatList, TouchableOpacity, Platform,AsyncStorage} from 'react-native'
+import {StyleSheet,
+         Text,
+         View,
+         ImageBackground,
+         FlatList,
+         TouchableOpacity,
+         Platform,
+          AsyncStorage} from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import todayImage from '../../assets/imgs/today.jpg'
@@ -13,45 +20,12 @@ import AddTask from  './AddTask'
 export default class Agenda extends Component{
 
         state = {
-            tasks:[
-                { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },    
-                    { id: Math.random(), desc:'Comprar Curso de React Native ',
-                    estimateAt: new Date(), doneAt: new Date() },
-                { id: Math.random(), desc: 'Concluir Curso',
-                    estimateAt: new Date(), doneAt: null },
-            ],
+            tasks:[],
             visibleTasks: [],
             showDoneTasks: true,
             showAddTask: false,
         }
-
+ 
         addTask = task => {
             const tasks = [...this.state.tasks]
             tasks.push({
@@ -132,7 +106,7 @@ export default class Agenda extends Component{
                 <View style={styles.taksContainer}>
                    <FlatList data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={({ item }) => <Task {...item} toggleTask ={this.toggleTask} 
+                        renderItem={({ item }) => <Task {...item} onToggleTask ={this.toggleTask} 
                         onDelete={this.deleteTask}/>}/>          
                 </View>
                 <ActionButton buttonColor={commonStyles.colors.today}
